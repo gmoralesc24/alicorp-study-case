@@ -52,17 +52,13 @@ Por ejemplo, al Top 10% con mayor probabilidad, podemos ofrecerles inmediatament
 
 ---
 
-**[Diapositiva 9: Conclusiones]**
-"En conclusión:
-1. Hemos demostrado que es posible predecir el potencial incremental basándonos fuertemente en el comportamiento pasado.
-2. Esta solución permite a Alicorp evolucionar de una segmentación reactiva y básica a una segmentación completamente proactiva, adelantándonos a la probabilidad futura.
-3. Finalmente, logramos una mayor eficiencia, enfocando los recursos y el presupuesto comercial únicamente donde sabemos que existe una alta probabilidad de retorno."
+**[Diapositiva 9: Conclusiones y Siguientes Pasos]**
+"En conclusión, hemos demostrado que es posible predecir el potencial incremental basándonos fuertemente en el comportamiento pasado. Esto permite a Alicorp pasar a una segmentación completamente proactiva y mejorar drásticamente el ROI de nuestras acciones comerciales. 
+Como siguientes pasos, proponemos ejecutar una Fase Piloto (A/B Testing) en un canal específico, y a futuro, incorporar más variables como datos macroeconómicos o de ubicación."
 
 ---
 
-**[Diapositiva 10: Siguientes Pasos]**
-"Para finalizar, los siguientes pasos naturales serían:
-Primero, ejecutar una Fase Piloto (A/B Testing) desplegando el modelo en un canal específico para medir empíricamente la venta incremental contra un grupo de control.
-Segundo, enriquecer el modelo incorporando nuevas fuentes, como datos macroeconómicos o la estacionalidad de productos.
-Y tercero, orquestar este flujo para su pase a producción, asegurando que el modelo califique a los clientes mensualmente de forma automática.
-Muchas gracias. Quedo atento a sus preguntas."
+**[Diapositiva 10: Despliegue en Producción (Centro de Control Web)]**
+"Para finalizar, quiero mostrarles un entregable real. Todo este modelo no se ha quedado solo en código: he construido un 'Centro de Control' web (Single Page Application) usando GitHub Pages y una tecnología llamada PyScript (WebAssembly).
+Lo que ven en pantalla es una plataforma donde los equipos comerciales pueden ingresar los datos de un cliente y ejecutar el modelo de Machine Learning en tiempo real, directamente en su navegador, sin necesidad de servidores costosos ni instalaciones complejas. Es decir, entrega de valor inmediata, escalable y lista para usarse.
+Muchas gracias. Quedo atento a sus preguntas y les invito a probar la plataforma."

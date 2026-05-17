@@ -71,17 +71,20 @@ Esta estructura está diseñada para cumplir con los requerimientos de la prueba
 
 ---
 
-## Diapositiva 9: Conclusiones
-1. Es posible predecir el potencial incremental basándonos fuertemente en el comportamiento transaccional pasado (RFM).
-2. El uso de Machine Learning permite a Alicorp pasar de una segmentación reactiva (basada en el ticket pasado) a una **proactiva** (basada en la probabilidad futura).
-3. Se logra una mayor eficiencia en el gasto comercial enfocando recursos solo donde hay alta probabilidad de retorno.
+## Diapositiva 9: Conclusiones y Siguientes Pasos
+- **Conclusión:** Es posible predecir el potencial incremental basándonos fuertemente en el comportamiento transaccional pasado (RFM), logrando una mayor eficiencia en el gasto comercial.
+- **Fase Piloto (A/B Testing):** Desplegar el modelo en un canal específico y comparar la venta incremental contra un grupo de control aleatorio.
+- **Nuevas Fuentes de Datos:** Incorporar datos macroeconómicos, ubicación geográfica exacta (lat/lon) y estacionalidad de productos.
 
 ---
 
-## Diapositiva 10: Siguientes Pasos
-- **Fase Piloto (A/B Testing):** Desplegar el modelo en una región o canal específico (ej. solo T1 o T3) y comparar la venta incremental contra un grupo de control aleatorio.
-- **Nuevas Fuentes de Datos:** Incorporar datos macroeconómicos, ubicación geográfica exacta (lat/lon) y estacionalidad de productos.
-- **Pase a Producción:** Orquestar el modelo (ej. vía Airflow / AWS) para que se re-entrene y califique a los clientes mensualmente.
+## Diapositiva 10: Despliegue en Producción (Centro de Control Web)
+- **Innovación Tecnológica:** Se ha desarrollado un "Centro de Control" en una Single Page Application (SPA).
+- **Tecnologías:** 
+  - *GitHub Pages:* Para alojamiento gratuito y de alta disponibilidad.
+  - *PyScript (WebAssembly):* Permite ejecutar el modelo de Machine Learning (Random Forest) en el navegador del usuario en tiempo real sin requerir un servidor backend (Edge Computing).
+- **Visual:** *[Mostrar captura de pantalla de la página web con el logo de Alicorp y el simulador de predicción probando un cliente]*
+- **Impacto:** Entrega de valor inmediata a los equipos de negocio mediante una interfaz amigable y lista para usar.
 
 ---
 *(Fin de la Presentación - 10 Minutos Máximo, seguido de Ronda de Preguntas)*

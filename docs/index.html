@@ -24,7 +24,7 @@
     <div class="app-container">
         <!-- Encabezado con la marca Alicorp -->
         <header class="brand-header">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Alicorp_logo.svg" alt="Alicorp Logo" class="brand-logo">
+            <img src="images-alicorp-logo.png" alt="Alicorp Logo" class="brand-logo">
             <p class="subtitle">Centro de Control: ML para Potencial Incremental</p>
         </header>
 
@@ -163,8 +163,11 @@
                 features[7] = amount
                 features[8] = avg_ticket
 
+                # Formatear como DataFrame para mantener los nombres de columnas (Evita UserWarning en consola/UI)
+                features_df = pd.DataFrame([features], columns=X.columns)
+
                 # Predecir
-                prob = model.predict_proba([features])[0][1] * 100
+                prob = model.predict_proba(features_df)[0][1] * 100
                 
                 prob_element = document.getElementById("probability-value")
                 prob_element.innerText = f"{prob:.1f}%"
