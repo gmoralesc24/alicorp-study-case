@@ -1,0 +1,79 @@
+Prueba Caso de Uso – Data Scientist
+Marzo 2025
+Contexto:
+Alicorp cuenta con 4 Cores de Negocio, uno de ellos son las
+ventas de sus productos hacia las bodegas o puestos de
+mercado.
+Alicorp quiere poder realizar acciones comerciales en sus
+clientes, pero no es suficiente el poder accionar sobre clientes
+que tienen un mayor ticket, piensan que pueden realizar otras
+acciones más estratégicas.
+Objetivo:
+Desarrollar un modelo predictivo que estime la probabilidad de
+que un cliente tenga un potencial de incremental de venta,
+para desarrollar estrategias comerciales que traigan mayor
+valor a la compañía.
+Descripción del Caso
+2
+Estas son las fuentes de información que podremos usar:
+Datos del cliente Datos Transaccionales
+Variable Descripción
+customer_id Identificador de cliente
+territory_id Id de territorio del cliente
+segment Id del segmento del cliente
+age_alicorp Cantidad de años que se encuentra 
+registrado en Alicorp.
+has_credit_line Flag si el cliente cuenta con linea de
+credito
+has_perfect_customer Flag si el cliente cuenta con la iniciativa 
+cliente perfecto
+has_marketing_impulse Flag si el cliente cuenta con la iniciativa 
+de mercaderismo
+target Flag si el cliente cuenta con potencial 
+de incremental de venta (Target)
+Variables Descripción
+date Fecha de la transacción
+customer_id Identificador de cliente
+product_id Id del producto
+category_product Categoria asociada al producto
+amount Venta en soles
+discount Descuento en soles
+Descripción de Variables
+3
+Actividades a realizar
+❑ Desarrollar un correcto preprocesamientoy secuencia en el 
+análisis de las variables y del caso. (Jupyter notebook –
+Python)
+❑ Desarrollar un modelo predictivo que nos ayude a predecir 
+que cliente tiene mayor probabilidad de tener potencial en el 
+incremental de venta. (Jupyter notebook – Python)
+❑ Desarrollar una presentación donde exponga los siguientes 
+puntos ( máx. 10 diapositivas)
+✓ Descripción del caso.
+✓ Desarrollo de la solución (modelo).
+✓ Resultados del modelo.
+✓ Estrategia o uso del modelo.
+✓ Conclusiones y siguientes pasos.
+❑ Exponer su presentación (10 min) más una ronda de 
+preguntas (10 min).
+4
+Evaluación del Caso
+La evaluación consta de 2 partes:
+Evaluación del modelo
+▪ Desarrollo del preprocesamiento(30%)
+▪ Modelo desarrollado (30%)
+Evaluación de la presentación
+▪ Exposición de las ideas (10%)
+▪ Estrategia o uso del modelo (15%)
+▪ Conclusiones y siguientes pasos (15%)
+5
+Información adicional:
+PD: Esta información puede ser relevante para el 
+desarrollo del caso o exposición
+Segmento Incremental
+Tiene potencial 10%
+Tiene potencial y tiene
+cliente Perfecto o 
+mercaderismo
+15%
+No tiene potencial 0.50%
