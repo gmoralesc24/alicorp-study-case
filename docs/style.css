@@ -156,3 +156,56 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* Estilos de Pestañas (Tabs) */
+.tabs-nav {
+    display: flex;
+    justify-content: center;
+    border-bottom: 2px solid var(--input-border);
+    margin-bottom: 20px;
+    background-color: var(--card-bg);
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+}
+
+.tab-btn {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 24px;
+    transition: 0.3s;
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--text-color);
+    border-bottom: 3px solid transparent;
+}
+
+.tab-btn:hover {
+    background-color: #f1f1f1;
+}
+
+.tab-btn.active {
+    color: var(--alicorp-red);
+    border-bottom: 3px solid var(--alicorp-red);
+}
+
+.tab-content {
+    animation: fadeEffect 0.5s;
+    width: 100%;
+}
+
+@keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+/* Estilos para iFrames de Notebooks */
+.notebook-frame {
+    width: 100%;
+    height: 80vh; /* 80% de la altura de la ventana */
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background-color: white;
+}

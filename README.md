@@ -25,14 +25,16 @@ El objetivo del proyecto es estimar la probabilidad de que un cliente tenga un p
 4. Coloca los archivos `data_cliente.csv` y `data_transaccional.csv` en la carpeta `data/raw/`.
 5. Ejecuta los Jupyter Notebooks en orden, desde la carpeta `notebooks/`.
 
-## Despliegue en GitHub Pages (Opcional)
+## Despliegue en GitHub Pages (Centro de Control)
 
-Si deseas mostrar tus cuadernos como una página web en GitHub Pages (sin que los evaluadores tengan que descargar el código), puedes exportarlos a HTML:
-```bash
-jupyter nbconvert --to html notebooks/01_EDA_and_Preprocessing.ipynb
-jupyter nbconvert --to html notebooks/02_Modeling.ipynb
-```
-Luego, renombra el archivo `01_EDA_and_Preprocessing.html` a `index.html` en la raíz del repositorio y súbelo a la rama `gh-pages` de tu repositorio.
+El proyecto cuenta con una interfaz web integrada (Single Page Application) pensada para GitHub Pages. Esta página sirve como un **Centro de Control** con pestañas para navegar entre los cuadernos de Jupyter y un simulador interactivo impulsado por PyScript.
+
+Los cuadernos han sido exportados previamente a HTML y alojados en la carpeta `docs/`.
+Para visualizar la web interactiva:
+1. Sube este repositorio a GitHub.
+2. Ve a los **Settings** de tu repositorio.
+3. En la sección **Pages** (GitHub Pages), selecciona desplegar desde la rama `master` (o main) apuntando a la carpeta `/docs`.
+4. Guarda y abre el link generado para explorar el Análisis, el Modelado y probar las predicciones en tiempo real sin necesidad de un backend.
 
 ## Autor
 Candidato a Machine Learning Engineer.
