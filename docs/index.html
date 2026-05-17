@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Potencial Incremental - Alicorp</title>
     
-    <!-- CSS y Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 
@@ -15,18 +14,18 @@
 
     <!-- Configuración de PyScript -->
     <py-config>
-        packages = ["scikit-learn", "pandas", "numpy", "joblib"]
+        packages = ["scikit-learn", "pandas", "numpy"]
         [[fetch]]
-        from = "./models/"
-        files = ["gb_model.joblib"]
+        from = "./"
+        files = ["abt_cliente.csv"]
     </py-config>
 </head>
 <body>
     <div class="app-container">
         <!-- Encabezado con la marca Alicorp -->
         <header class="brand-header">
-            <h1 class="logo-text">alicorp</h1>
-            <p class="subtitle">Centro de Control: Estimador de Potencial Incremental (ML)</p>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Alicorp_logo.svg" alt="Alicorp Logo" class="brand-logo">
+            <p class="subtitle">Centro de Control: ML para Potencial Incremental</p>
         </header>
 
         <!-- Barra de Navegación (Pestañas) -->
@@ -50,11 +49,11 @@
         <div id="tab-simulator" class="tab-content" style="display: none;">
             <main class="card">
                 <h2>Simulador en Tiempo Real</h2>
-                <p class="description">Introduzca las variables del cliente para estimar la probabilidad de que posea potencial incremental de venta, ejecutando el modelo final entrenado directamente en tu navegador.</p>
+                <p class="description">Ingrese las variables transaccionales de un cliente de bodegas o mercados para estimar su probabilidad de crecimiento usando el modelo Random Forest directamente en tu navegador.</p>
                 
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="age">Antigüedad (Días como cliente):</label>
+                        <label for="age">Antigüedad (Días):</label>
                         <input type="number" id="age" value="365" min="0">
                     </div>
                     
@@ -64,7 +63,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="frequency">Frecuencia (Cantidad de transacciones):</label>
+                        <label for="frequency">Frecuencia (Cantidad Transacciones):</label>
                         <input type="number" id="frequency" value="10" min="0">
                     </div>
 
@@ -77,7 +76,7 @@
                         <label for="credit">¿Tiene Línea de Crédito?</label>
                         <select id="credit">
                             <option value="1">Sí</option>
-                            <option value="0">No</option>
+                            <option value="0" selected>No</option>
                         </select>
                     </div>
                 </div>
@@ -86,7 +85,7 @@
 
                 <!-- Spinner de Carga Inicial -->
                 <div id="loading" class="loading">
-                    Cargando entorno de IA...
+                    Descargando modelo de Inteligencia Artificial al navegador...
                 </div>
 
                 <!-- Resultado -->
@@ -99,23 +98,17 @@
         </div>
     </div>
 
-    <!-- Lógica JavaScript para Pestañas -->
     <script>
         function openTab(evt, tabName) {
-            // Ocultar todas las pestañas
             var i, tabcontent, tablinks;
             tabcontent = document.getElementsByClassName("tab-content");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
             }
-            
-            // Quitar clase "active" de todos los botones
             tablinks = document.getElementsByClassName("tab-btn");
             for (i = 0; i < tablinks.length; i++) {
                 tablinks[i].className = tablinks[i].className.replace(" active", "");
             }
-            
-            // Mostrar la pestaña actual y añadir "active" al botón
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
         }
@@ -123,53 +116,81 @@
 
     <!-- Script de Python (PyScript) -->
     <py-script>
-        from js import document
-        import joblib
+        from js import document, console
+        import pandas as pd
         import numpy as np
+        from sklearn.ensemble import RandomForestClassifier
 
-        # Ocultar el mensaje de carga cuando el entorno est listo
-        document.getElementById("loading").classList.add("hidden")
-        model = joblib.load("gb_model.joblib")
+        try:
+            document.getElementById("loading").innerText = "Inicializando IA (100% Web)..."
+            
+            # Cargamos los datos del ABT localmente para evitar errores de Pickling entre 64bits y WASM
+            df = pd.read_csv("abt_cliente.csv")
+            X = df.drop(['customer_id', 'target'], axis=1)
+            y = df['target']
+            
+            # Entrenamos el modelo optimizado (RandomForest) rápidamente en memoria
+            model = RandomForestClassifier(n_estimators=50, max_depth=10, random_state=42)
+            model.fit(X, y)
+            
+            # Ocultamos la carga y habilitamos la interfaz
+            document.getElementById("loading").classList.add("hidden")
+            console.log("Modelo inicializado y listo para predecir.")
+
+        except Exception as e:
+            document.getElementById("loading").innerText = f"Error inicializando IA: {str(e)}"
+            console.log("Error:", str(e))
 
         def hacer_prediccion(event):
-            age = float(document.getElementById("age").value)
-            recency = float(document.getElementById("recency").value)
-            frequency = float(document.getElementById("frequency").value)
-            amount = float(document.getElementById("amount").value)
-            credit = float(document.getElementById("credit").value)
-            
-            avg_ticket = amount / frequency if frequency > 0 else 0
-            unique_cat = 3
-            
-            features = np.zeros(21)
-            features[0] = age
-            features[1] = credit
-            features[4] = recency
-            features[5] = frequency
-            features[6] = unique_cat
-            features[7] = amount
-            features[8] = avg_ticket
-
-            prob = model.predict_proba([features])[0][1] * 100
-            
-            prob_element = document.getElementById("probability-value")
-            prob_element.innerText = f"{prob:.1f}%"
-            rec_element = document.getElementById("recommendation")
-            
-            if prob >= 70:
-                prob_element.style.color = "#E3000F"
-                rec_element.innerText = "⭐ ¡Cliente Top! Ofrecer campañas de Cliente Perfecto o incrementar su Línea de Crédito."
-                rec_element.style.backgroundColor = "#ffe6e6"
-            elif prob >= 40:
-                prob_element.style.color = "#f39c12"
-                rec_element.innerText = "📈 Cliente Medio. Realizar impulso de mercaderismo en su punto de venta."
-                rec_element.style.backgroundColor = "#fff3cd"
-            else:
-                prob_element.style.color = "#7f8c8d"
-                rec_element.innerText = "📉 Cliente de Bajo Potencial. Mantener nivel de atención estándar."
-                rec_element.style.backgroundColor = "#f8f9fa"
+            try:
+                age = float(document.getElementById("age").value)
+                recency = float(document.getElementById("recency").value)
+                frequency = float(document.getElementById("frequency").value)
+                amount = float(document.getElementById("amount").value)
+                credit = float(document.getElementById("credit").value)
                 
-            document.getElementById("result-box").classList.remove("hidden")
+                avg_ticket = amount / frequency if frequency > 0 else 0
+                unique_cat = 3 # Constante Promedio
+                
+                # Feature array order matches X.columns
+                features = np.zeros(len(X.columns))
+                
+                features[0] = age
+                features[1] = credit
+                features[4] = recency
+                features[5] = frequency
+                features[6] = unique_cat
+                features[7] = amount
+                features[8] = avg_ticket
+
+                # Predecir
+                prob = model.predict_proba([features])[0][1] * 100
+                
+                prob_element = document.getElementById("probability-value")
+                prob_element.innerText = f"{prob:.1f}%"
+                rec_element = document.getElementById("recommendation")
+                
+                # Reglas de negocio estilizadas
+                if prob >= 50: # RandomForest probabilities are usually more conservative
+                    prob_element.style.color = "#E3000F"
+                    rec_element.innerHTML = "⭐ <strong>¡Cliente Top!</strong><br>Ofrecer iniciativas comerciales y aumento de crédito."
+                    rec_element.style.backgroundColor = "#ffeaeb"
+                    rec_element.style.borderLeft = "5px solid #E3000F"
+                elif prob >= 25:
+                    prob_element.style.color = "#f39c12"
+                    rec_element.innerHTML = "📈 <strong>Cliente Medio</strong><br>Invertir en campañas de mercaderismo en punto de venta."
+                    rec_element.style.backgroundColor = "#fff3cd"
+                    rec_element.style.borderLeft = "5px solid #f39c12"
+                else:
+                    prob_element.style.color = "#7f8c8d"
+                    rec_element.innerHTML = "📉 <strong>Bajo Potencial</strong><br>Mantener la ruta de visita habitual."
+                    rec_element.style.backgroundColor = "#f8f9fa"
+                    rec_element.style.borderLeft = "5px solid #7f8c8d"
+                    
+                document.getElementById("result-box").classList.remove("hidden")
+            except Exception as e:
+                console.log("Error en predicción:", str(e))
+                document.getElementById("recommendation").innerText = "Error: Verifica los datos ingresados."
     </py-script>
 </body>
 </html>
