@@ -1,0 +1,158 @@
+/* style.css - Diseño Corporativo para el Caso Alicorp */
+:root {
+    --alicorp-red: #E3000F; /* Color primario característico */
+    --alicorp-dark: #2c3e50;
+    --background: #f4f7f6;
+    --card-bg: #ffffff;
+    --text-color: #333333;
+    --input-border: #cccccc;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--background);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+}
+
+.brand-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo-text {
+    color: var(--alicorp-red);
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -1px;
+}
+
+.subtitle {
+    color: var(--alicorp-dark);
+    font-size: 1.1rem;
+    margin-top: 5px;
+}
+
+.card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    padding: 40px;
+}
+
+.card h2 {
+    color: var(--alicorp-dark);
+    margin-top: 0;
+    border-bottom: 2px solid var(--alicorp-red);
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+.description {
+    color: #666;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    color: var(--alicorp-dark);
+}
+
+.form-group input, .form-group select {
+    padding: 12px;
+    border: 1px solid var(--input-border);
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus, .form-group select:focus {
+    outline: none;
+    border-color: var(--alicorp-red);
+}
+
+.btn-primary {
+    background-color: var(--alicorp-red);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.btn-primary:hover {
+    background-color: #c4000d;
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+.loading {
+    margin-top: 20px;
+    text-align: center;
+    color: #e67e22;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.result-box {
+    margin-top: 30px;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.prob-value {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin: 10px 0;
+}
+
+.recommendation {
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: var(--alicorp-dark);
+}
+
+/* Responsividad */
+@media (max-width: 600px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}

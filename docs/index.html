@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potencial Incremental - Alicorp</title>
+    
+    <!-- CSS y Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- PyScript para ejecutar Python en el navegador -->
+    <link rel="stylesheet" href="https://pyscript.net/releases/2023.11.1/core.css" />
+    <script type="module" src="https://pyscript.net/releases/2023.11.1/core.js"></script>
+
+    <!-- Configuración de PyScript: paquetes necesarios y acceso a archivos locales -->
+    <py-config>
+        packages = ["scikit-learn", "pandas", "numpy", "joblib"]
+        [[fetch]]
+        from = "./models/"
+        files = ["gb_model.joblib"]
+    </py-config>
+</head>
+<body>
+    <div class="container">
+        <!-- Encabezado con la marca Alicorp -->
+        <header class="brand-header">
+            <!-- Como no tenemos el logo oficial local, usamos un texto con su estilo representativo -->
+            <h1 class="logo-text">alicorp</h1>
+            <p class="subtitle">Estimador de Potencial Incremental (ML)</p>
+        </header>
+
+        <!-- Contenedor Principal -->
+        <main class="card">
+            <h2>Ingrese los Datos del Cliente</h2>
+            <p class="description">Introduzca las variables más importantes del historial de compra (RFM) para estimar la probabilidad de crecimiento del cliente.</p>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="age">Antigüedad (Días como cliente):</label>
+                    <input type="number" id="age" value="365" min="0">
+                </div>
+                
+                <div class="form-group">
+                    <label for="recency">Recencia (Días desde última compra):</label>
+                    <input type="number" id="recency" value="15" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="frequency">Frecuencia (Cantidad de transacciones):</label>
+                    <input type="number" id="frequency" value="10" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="amount">Monto Total Histórico (S/):</label>
+                    <input type="number" id="amount" value="5000" min="0" step="0.01">
+                </div>
+                
+                <div class="form-group">
+                    <label for="credit">¿Tiene Línea de Crédito?</label>
+                    <select id="credit">
+                        <option value="1">Sí</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+            </div>
+
+            <button id="predict-btn" class="btn-primary" py-click="hacer_prediccion">Estimar Potencial Incremental</button>
+
+            <!-- Spinner de Carga Inicial -->
+            <div id="loading" class="loading">
+                Cargando el entorno de Inteligencia Artificial en tu navegador. Por favor, espera unos segundos...
+            </div>
+
+            <!-- Resultado -->
+            <div id="result-box" class="result-box hidden">
+                <h3>Probabilidad de Potencial Incremental:</h3>
+                <div id="probability-value" class="prob-value">--%</div>
+                <div id="recommendation" class="recommendation"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Script de Python -->
+    <py-script>
+        from js import document
+        import joblib
+        import numpy as np
+
+        # Ocultar el mensaje de carga cuando el entorno de Python est listo
+        document.getElementById("loading").classList.add("hidden")
+
+        # Cargar el modelo en memoria (se descarg via 'fetch' en py-config)
+        model = joblib.load("gb_model.joblib")
+
+        def hacer_prediccion(event):
+            # Obtener valores de la UI
+            age = float(document.getElementById("age").value)
+            recency = float(document.getElementById("recency").value)
+            frequency = float(document.getElementById("frequency").value)
+            amount = float(document.getElementById("amount").value)
+            credit = float(document.getElementById("credit").value)
+            
+            # El modelo espera 21 variables. Llenaremos las no ingresadas con valores lgicos/promedios.
+            # Orden de las 21 features:
+            # 0: age_alicorp, 1: has_credit_line, 2: has_perfect_customer, 3: has_marketing_impulse
+            # 4: recency, 5: frequency, 6: unique_categories, 7: total_amount, 8: avg_ticket
+            # 9: total_discount, 10: discount_rate, 11-15: territories(T2-T6), 16-20: segments(S1,S3-S6)
+            
+            avg_ticket = amount / frequency if frequency > 0 else 0
+            unique_cat = 3  # Promedio asumido
+            
+            # Array inicial de ceros
+            features = np.zeros(21)
+            features[0] = age
+            features[1] = credit
+            # Perfect customer y marketing impulse a 0 (No)
+            features[4] = recency
+            features[5] = frequency
+            features[6] = unique_cat
+            features[7] = amount
+            features[8] = avg_ticket
+            # Descuentos a 0
+            # Territorios a 0 (Asumimos T1 implcitamente si todos son 0)
+            # Segmentos a 0 (Asumimos S2 implcitamente si todos son 0)
+
+            # Predecir Probabilidad
+            prob = model.predict_proba([features])[0][1] * 100
+            
+            # Mostrar resultado en la UI
+            prob_element = document.getElementById("probability-value")
+            prob_element.innerText = f"{prob:.1f}%"
+            
+            rec_element = document.getElementById("recommendation")
+            
+            # Lgica de recomendacin comercial
+            if prob >= 70:
+                prob_element.style.color = "#E3000F" # Rojo Alicorp
+                rec_element.innerText = "⭐ ¡Cliente Top! Ofrecer campaas de Cliente Perfecto o incrementar su Lnea de Crdito automticamente."
+                rec_element.style.backgroundColor = "#ffe6e6"
+            elif prob >= 40:
+                prob_element.style.color = "#f39c12" # Naranja
+                rec_element.innerText = "📈 Cliente Medio. Realizar impulso de mercaderismo en su punto de venta para reactivar su potencial."
+                rec_element.style.backgroundColor = "#fff3cd"
+            else:
+                prob_element.style.color = "#7f8c8d" # Gris
+                rec_element.innerText = "📉 Cliente de Bajo Potencial. Mantener nivel de atencin estndar, no destinar presupuestos extraordinarios."
+                rec_element.style.backgroundColor = "#f8f9fa"
+                
+            # Mostrar la caja de resultados
+            document.getElementById("result-box").classList.remove("hidden")
+
+    </py-script>
+</body>
+</html>

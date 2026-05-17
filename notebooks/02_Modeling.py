@@ -134,6 +134,22 @@ plt.tight_layout()
 plt.show()
 
 # %% [markdown]
+# ### 7. Exportación del Modelo
+# Guardaremos el modelo entrenado para usarlo en la interfaz web de GitHub Pages.
+
+# %%
+import joblib
+
+# Crear carpeta docs/models si no existe (relativo a la raíz desde notebooks)
+models_dir = os.path.join('..', 'docs', 'models')
+os.makedirs(models_dir, exist_ok=True)
+
+# Exportar el modelo de Gradient Boosting (Modelo Elegido)
+model_path = os.path.join(models_dir, 'gb_model.joblib')
+joblib.dump(gb_model, model_path)
+print(f"Modelo exportado a: {model_path}")
+
+# %% [markdown]
 # ### Conclusiones:
 # 1. Variables como **Recency**, **Frequency** y **Total Amount** son muy predictivas, demostrando que la actividad reciente y volumetría de compra es clave para predecir si un cliente tiene potencial incremental.
 # 2. Las variables generadas (RFM) dominaron el top de importancia.
