@@ -51,6 +51,31 @@
                 <h2>Simulador en Tiempo Real</h2>
                 <p class="description">Ingrese las variables transaccionales de un cliente de bodegas o mercados para estimar su probabilidad de crecimiento usando el modelo Random Forest directamente en tu navegador.</p>
                 
+                <!-- Selector de Escenarios (Casuísticas) -->
+                <div class="scenario-selector">
+                    <label for="scenario-combo"><strong>💡 Cargar Caso de Prueba Rápida:</strong></label>
+                    <select id="scenario-combo" onchange="loadScenario(this.value)">
+                        <option value="none">-- Selecciona un perfil de cliente (Autocompletar) --</option>
+                        <option value="leal">Bodega Leal (Alta Frecuencia, Montos Altos)</option>
+                        <option value="ocasional">Mercado Ocasional (Baja Frecuencia)</option>
+                        <option value="nuevo">Cliente Nuevo Prometedor (Reciente y Activo)</option>
+                        <option value="riesgo">Cliente en Riesgo de Fuga (Alta Recencia)</option>
+                    </select>
+                </div>
+
+                <!-- Leyenda de Parámetros Fijos -->
+                <details class="fixed-params-box">
+                    <summary>ℹ️ Ver variables preestablecidas (Promedios Fijos)</summary>
+                    <div class="fixed-params-content">
+                        <p>Para simplificar el uso del simulador, el modelo asume por defecto los siguientes valores promedio históricos para este cliente:</p>
+                        <ul>
+                            <li><strong>Categorías Únicas Compradas:</strong> 3 categorías distintas</li>
+                            <li><strong>Campañas Previas:</strong> 0 (Sin impulsos promocionales recientes)</li>
+                            <li><strong>Descuento Promedio Aplicado:</strong> 0% (Condiciones base)</li>
+                        </ul>
+                    </div>
+                </details>
+
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="age">Antigüedad (Días):</label>
@@ -83,6 +108,16 @@
 
                 <button id="predict-btn" class="btn-primary" py-click="hacer_prediccion">Estimar Potencial</button>
 
+                <!-- Leyenda de Umbrales de Probabilidad -->
+                <div class="threshold-legend">
+                    <h4>Interpretación de Resultados</h4>
+                    <div class="legend-items">
+                        <span class="legend-item"><span class="dot red"></span> <strong>&ge; 50%:</strong> Top (Alto Potencial)</span>
+                        <span class="legend-item"><span class="dot yellow"></span> <strong>25% - 49%:</strong> Medio (Mercaderismo)</span>
+                        <span class="legend-item"><span class="dot gray"></span> <strong>&lt; 25%:</strong> Bajo Potencial</span>
+                    </div>
+                </div>
+
                 <!-- Spinner de Carga Inicial -->
                 <div id="loading" class="loading">
                     Descargando modelo de Inteligencia Artificial al navegador...
@@ -112,6 +147,25 @@
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
         }
+
+        function loadScenario(val) {
+            if (val === 'none') return;
+            let age, recency, freq, amount, credit;
+            if (val === 'leal') {
+                age = 1200; recency = 5; freq = 50; amount = 15000; credit = "1";
+            } else if (val === 'ocasional') {
+                age = 365; recency = 45; freq = 4; amount = 800; credit = "0";
+            } else if (val === 'nuevo') {
+                age = 90; recency = 10; freq = 15; amount = 3000; credit = "1";
+            } else if (val === 'riesgo') {
+                age = 730; recency = 90; freq = 2; amount = 200; credit = "0";
+            }
+            document.getElementById('age').value = age;
+            document.getElementById('recency').value = recency;
+            document.getElementById('frequency').value = freq;
+            document.getElementById('amount').value = amount;
+            document.getElementById('credit').value = credit;
+        }
     </script>
 
     <!-- Script de Python (PyScript) -->
@@ -124,16 +178,13 @@
         try:
             document.getElementById("loading").innerText = "Inicializando IA (100% Web)..."
             
-            # Cargamos los datos del ABT localmente para evitar errores de Pickling entre 64bits y WASM
             df = pd.read_csv("abt_cliente.csv")
             X = df.drop(['customer_id', 'target'], axis=1)
             y = df['target']
             
-            # Entrenamos el modelo optimizado (RandomForest) rápidamente en memoria
             model = RandomForestClassifier(n_estimators=50, max_depth=10, random_state=42)
             model.fit(X, y)
             
-            # Ocultamos la carga y habilitamos la interfaz
             document.getElementById("loading").classList.add("hidden")
             console.log("Modelo inicializado y listo para predecir.")
 
@@ -163,18 +214,15 @@
                 features[7] = amount
                 features[8] = avg_ticket
 
-                # Formatear como DataFrame para mantener los nombres de columnas (Evita UserWarning en consola/UI)
                 features_df = pd.DataFrame([features], columns=X.columns)
 
-                # Predecir
                 prob = model.predict_proba(features_df)[0][1] * 100
                 
                 prob_element = document.getElementById("probability-value")
                 prob_element.innerText = f"{prob:.1f}%"
                 rec_element = document.getElementById("recommendation")
                 
-                # Reglas de negocio estilizadas
-                if prob >= 50: # RandomForest probabilities are usually more conservative
+                if prob >= 50: 
                     prob_element.style.color = "#E3000F"
                     rec_element.innerHTML = "⭐ <strong>¡Cliente Top!</strong><br>Ofrecer iniciativas comerciales y aumento de crédito."
                     rec_element.style.backgroundColor = "#ffeaeb"
