@@ -7,6 +7,9 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    
+    <!-- FontAwesome para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- PyScript para ejecutar Python en el navegador -->
     <link rel="stylesheet" href="https://pyscript.net/releases/2023.11.1/core.css" />
@@ -30,22 +33,69 @@
 
         <!-- Barra de Navegación (Pestañas) -->
         <nav class="tabs-nav">
-            <button class="tab-btn active" onclick="openTab(event, 'tab-eda')">1. EDA & Preprocesamiento</button>
-            <button class="tab-btn" onclick="openTab(event, 'tab-modeling')">2. Modelado y Evaluación</button>
-            <button class="tab-btn" onclick="openTab(event, 'tab-simulator')">3. Simulador Predictivo</button>
+            <button class="tab-btn active" onclick="openTab(event, 'tab-home')">🏠 Inicio</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-slides')">📊 Presentación</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-eda')">📓 EDA</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-modeling')">⚙️ Modelado</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-simulator')">🤖 Simulador</button>
         </nav>
 
-        <!-- Contenedor Pestaña 1: EDA -->
-        <div id="tab-eda" class="tab-content" style="display: block;">
+        <!-- Contenedor Pestaña 1: Inicio (Home) -->
+        <div id="tab-home" class="tab-content" style="display: block;">
+            <main class="card home-card">
+                <h2>Caso de Estudio: Estimador de Potencial Incremental</h2>
+                
+                <div class="home-section">
+                    <h3><i class="fa-solid fa-bullseye" style="color: var(--alicorp-red);"></i> El Problema y Objetivo</h3>
+                    <p>Actualmente, identificar el potencial de crecimiento de los clientes (bodegas y mercados) se basa en métricas reactivas como el volumen del ticket de la última compra. Esto no permite priorizar adecuadamente a los clientes que, aunque compran poco hoy, tienen una alta probabilidad de incrementar sus ventas futuras.</p>
+                    <p><strong>El objetivo:</strong> Desarrollar un modelo predictivo de Machine Learning que estime la probabilidad de que un cliente posea un verdadero potencial incremental, logrando así una segmentación proactiva para dirigir iniciativas comerciales (ej. Cliente Perfecto, mercaderismo, líneas de crédito) donde el retorno de inversión sea mayor.</p>
+                </div>
+
+                <div class="home-section">
+                    <h3><i class="fa-solid fa-microchip" style="color: var(--alicorp-red);"></i> Metodología Aplicada</h3>
+                    <ul class="methodology-list">
+                        <li><strong>Ingeniería de Características (RFM):</strong> Transformación de 392 mil registros transaccionales en variables de Recencia, Frecuencia y Monetario por cliente.</li>
+                        <li><strong>Tratamiento de Datos:</strong> Uso de técnicas avanzadas como <code>SMOTE</code> para balancear la variable objetivo altamente desbalanceada.</li>
+                        <li><strong>Modelado:</strong> Construcción y evaluación de algoritmos basados en árboles (Random Forest y Gradient Boosting) maximizando la curva ROC-AUC.</li>
+                        <li><strong>Despliegue Web (Serverless):</strong> Conversión del modelo predictivo para que se ejecute en vivo usando <em>WebAssembly (PyScript)</em> en el navegador del usuario final.</li>
+                    </ul>
+                </div>
+
+                <div class="home-section text-center">
+                    <h3><i class="fa-solid fa-laptop-code" style="color: var(--alicorp-red);"></i> Stack Tecnológico Utilizado</h3>
+                    <div class="tech-stack-grid">
+                        <div class="tech-item"><i class="fa-brands fa-python" style="color: #3776AB;"></i><span>Python</span></div>
+                        <div class="tech-item"><i class="fa-solid fa-brain" style="color: #F7931E;"></i><span>Scikit-Learn</span></div>
+                        <div class="tech-item"><i class="fa-solid fa-table" style="color: #150458;"></i><span>Pandas</span></div>
+                        <div class="tech-item"><i class="fa-brands fa-html5" style="color: #E34F26;"></i><span>HTML / CSS</span></div>
+                        <div class="tech-item"><i class="fa-brands fa-js" style="color: #F7DF1E;"></i><span>PyScript (JS)</span></div>
+                        <div class="tech-item"><i class="fa-brands fa-github" style="color: #181717;"></i><span>GitHub Pages</span></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Contenedor Pestaña 2: Presentación -->
+        <div id="tab-slides" class="tab-content" style="display: none;">
+            <main class="card">
+                <h2>Presentación Ejecutiva</h2>
+                <div class="iframe-container">
+                    <iframe src="https://docs.google.com/presentation/d/1u5N8EhU884RWe7hJUpeQl86Lj4J7sm1vVacvo-TzVRI/embed?start=false&loop=false&delayms=3000" frameborder="0" width="100%" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" class="notebook-frame"></iframe>
+                </div>
+            </main>
+        </div>
+
+        <!-- Contenedor Pestaña 3: EDA -->
+        <div id="tab-eda" class="tab-content" style="display: none;">
             <iframe src="01_EDA_and_Preprocessing.html" title="EDA and Preprocessing Notebook" class="notebook-frame"></iframe>
         </div>
 
-        <!-- Contenedor Pestaña 2: Modelado -->
+        <!-- Contenedor Pestaña 4: Modelado -->
         <div id="tab-modeling" class="tab-content" style="display: none;">
             <iframe src="02_Modeling.html" title="Modeling Notebook" class="notebook-frame"></iframe>
         </div>
 
-        <!-- Contenedor Pestaña 3: Simulador PyScript -->
+        <!-- Contenedor Pestaña 5: Simulador PyScript -->
         <div id="tab-simulator" class="tab-content" style="display: none;">
             <main class="card">
                 <h2>Simulador en Tiempo Real</h2>
@@ -56,10 +106,13 @@
                     <label for="scenario-combo"><strong>💡 Cargar Caso de Prueba Rápida:</strong></label>
                     <select id="scenario-combo" onchange="loadScenario(this.value)">
                         <option value="none">-- Selecciona un perfil de cliente (Autocompletar) --</option>
-                        <option value="leal">Bodega Leal (Alta Frecuencia, Montos Altos)</option>
-                        <option value="ocasional">Mercado Ocasional (Baja Frecuencia)</option>
-                        <option value="nuevo">Cliente Nuevo Prometedor (Reciente y Activo)</option>
-                        <option value="riesgo">Cliente en Riesgo de Fuga (Alta Recencia)</option>
+                        <option value="vip" style="font-weight: bold; color: #1e7e34;">▶ Cliente VIP Consolidado (Muy Alto Potencial, >70%)</option>
+                        <option value="leal">▶ Bodega Leal (Alta Frecuencia, Montos Altos)</option>
+                        <option value="mayorista">▶ Mercado Mayorista Emergente (~50-60%)</option>
+                        <option value="nuevo">▶ Cliente Nuevo Prometedor (Reciente y Activo)</option>
+                        <option value="ocasional">▶ Mercado Ocasional (Baja Frecuencia)</option>
+                        <option value="riesgo" style="color: #d35400;">▶ Cliente en Riesgo de Fuga (Alta Recencia)</option>
+                        <option value="estancada" style="font-weight: bold; color: #c0392b;">▶ Bodega Estancada (Bajo Potencial, <20%)</option>
                     </select>
                 </div>
 
@@ -151,15 +204,24 @@
         function loadScenario(val) {
             if (val === 'none') return;
             let age, recency, freq, amount, credit;
-            if (val === 'leal') {
+            
+            // Definición de las casuísticas extremas y medias
+            if (val === 'vip') {
+                age = 800; recency = 2; freq = 80; amount = 25000; credit = "1";
+            } else if (val === 'leal') {
                 age = 1200; recency = 5; freq = 50; amount = 15000; credit = "1";
-            } else if (val === 'ocasional') {
-                age = 365; recency = 45; freq = 4; amount = 800; credit = "0";
+            } else if (val === 'mayorista') {
+                age = 150; recency = 7; freq = 25; amount = 12000; credit = "1";
             } else if (val === 'nuevo') {
                 age = 90; recency = 10; freq = 15; amount = 3000; credit = "1";
+            } else if (val === 'ocasional') {
+                age = 365; recency = 45; freq = 4; amount = 800; credit = "0";
             } else if (val === 'riesgo') {
                 age = 730; recency = 90; freq = 2; amount = 200; credit = "0";
+            } else if (val === 'estancada') {
+                age = 2000; recency = 180; freq = 1; amount = 50; credit = "0";
             }
+            
             document.getElementById('age').value = age;
             document.getElementById('recency').value = recency;
             document.getElementById('frequency').value = freq;
