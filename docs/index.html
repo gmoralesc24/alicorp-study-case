@@ -128,13 +128,14 @@
 
                 <!-- Leyenda de Parámetros Fijos -->
                 <details class="fixed-params-box">
-                    <summary>ℹ️ Ver variables preestablecidas (Promedios Fijos)</summary>
+                    <summary>ℹ️ Ver variables preestablecidas (Imputación de Media Histórica)</summary>
                     <div class="fixed-params-content">
-                        <p>Para simplificar el uso del simulador, el modelo asume por defecto los siguientes valores promedio históricos para este cliente:</p>
-                        <ul>
-                            <li><strong>Categorías Únicas Compradas:</strong> 3 categorías distintas</li>
-                            <li><strong>Campañas Previas:</strong> 0 (Sin impulsos promocionales recientes)</li>
-                            <li><strong>Descuento Promedio Aplicado:</strong> 0% (Condiciones base)</li>
+                        <p>El modelo predictivo requiere 21 variables para operar. Para simplificar esta demostración interactiva, se evalúan 5 variables clave manualmente. Las 16 variables restantes se imputan dinámicamente utilizando la <strong>Media Histórica del Dataset</strong>, asegurando que el motor de inferencia reciba un perfil realista y previniendo anomalías matemáticas:</p>
+                        <ul style="margin-top: 10px; margin-bottom: 0;">
+                            <li><strong>Iniciativas Comerciales:</strong> Probabilidad histórica de participación en el programa <em>Cliente Perfecto</em> y recepción de <em>Impulsos de Marketing</em>.</li>
+                            <li><strong>Comportamiento de Compra:</strong> <em>Categorías Únicas</em> compradas (fijado en 3) y <em>Ticket Promedio</em> (calculado automáticamente según frecuencia y monto).</li>
+                            <li><strong>Descuentos y Promociones:</strong> <em>Monto Total de Descuento Acumulado</em> y <em>Tasa Promedio de Descuento</em> de la cartera general.</li>
+                            <li><strong>Demografía y Geografía:</strong> Variables de distribución territorial (<em>Territorios T1 al T6</em>) y tipología del negocio (<em>Segmentos S1 al S6</em>), asumiendo el centroide poblacional del dataset.</li>
                         </ul>
                     </div>
                 </details>
