@@ -241,14 +241,25 @@
             document.getElementById("loading").innerText = "Inicializando IA (100% Web)..."
             
             df = pd.read_csv("abt_cliente.csv")
-            X = df.drop(['customer_id', 'target'], axis=1)
-            y = df['target']
             
+            # --- SOLUCIÓN TÉCNICA 1: Undersampling para Balanceo 50/50 ---
+            df_min = df[df.target == 1]
+            df_maj = df[df.target == 0].sample(len(df_min), random_state=42)
+            df_bal = pd.concat([df_min, df_maj])
+            
+            X = df_bal.drop(['customer_id', 'target'], axis=1)
+            y = df_bal['target']
+            
+            # --- SOLUCIÓN TÉCNICA 2: Capturar los Promedios Históricos Reales ---
+            # Esto evita inyectar Ceros absolutos en variables ocultas, lo cual confundiría al modelo.
+            feature_means = X.mean().values
+            
+            # Entrenamos con el dataset balanceado
             model = RandomForestClassifier(n_estimators=50, max_depth=10, random_state=42)
             model.fit(X, y)
             
             document.getElementById("loading").classList.add("hidden")
-            console.log("Modelo inicializado y listo para predecir.")
+            console.log("Modelo inicializado, balanceado y listo para predecir.")
 
         except Exception as e:
             document.getElementById("loading").innerText = f"Error inicializando IA: {str(e)}"
@@ -263,11 +274,13 @@
                 credit = float(document.getElementById("credit").value)
                 
                 avg_ticket = amount / frequency if frequency > 0 else 0
-                unique_cat = 3 # Constante Promedio
+                unique_cat = 3 # Constante Promedio Estética
                 
-                # Feature array order matches X.columns
-                features = np.zeros(len(X.columns))
+                # Iniciar con los promedios reales de TODAS las variables
+                features = feature_means.copy()
                 
+                # Sobrescribir solo los índices de las variables que se ingresan en pantalla
+                # El orden corresponde a las columnas del CSV original
                 features[0] = age
                 features[1] = credit
                 features[4] = recency
