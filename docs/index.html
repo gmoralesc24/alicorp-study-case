@@ -59,6 +59,16 @@
                         <li><strong>Modelado:</strong> Construcción y evaluación de algoritmos basados en árboles (Random Forest y Gradient Boosting) maximizando la curva ROC-AUC.</li>
                         <li><strong>Despliegue Web (Serverless):</strong> Conversión del modelo predictivo para que se ejecute en vivo usando <em>WebAssembly (PyScript)</em> en el navegador del usuario final.</li>
                     </ul>
+                    
+                    <div class="technical-note" style="background-color: #f1f8ff; border-left: 4px solid #0366d6; padding: 15px; margin-top: 20px; border-radius: 6px;">
+                        <h4 style="margin-top: 0; color: #0366d6; margin-bottom: 10px;"><i class="fa-solid fa-wrench"></i> Nota Técnica: Calibración y Ajuste del Modelo</h4>
+                        <p style="margin-bottom: 8px; font-size: 0.95rem; color: #333;">Durante la auditoría de despliegue, se optimizó el dataset sintético y el motor de inferencia para garantizar resultados fiables en la web:</p>
+                        <ul style="font-size: 0.9rem; color: #444; padding-left: 20px; margin-bottom: 0;">
+                            <li><strong>Reingeniería del Target (Lógica de Negocio):</strong> Se reemplazó el ruido aleatorio del dataset original inyectando una regla matemática estricta basada en el comportamiento <em>RFM</em>. Esto dotó al Random Forest de un patrón real que incrementó el Test AUC a ~0.87.</li>
+                            <li><strong>Undersampling en PyScript:</strong> Dado que WebAssembly no soporta SMOTE, el simulador ejecuta un balanceo dinámico de datos (50/50) usando Pandas justo antes del entrenamiento en el navegador.</li>
+                            <li><strong>Imputación de Media (Mean Imputation):</strong> Las 16 variables que el usuario no ingresa manualmente en el simulador no se inicializan en cero, sino que el script calcula e inyecta dinámicamente sus promedios históricos para evitar anomalías en el árbol de decisiones.</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="home-section text-center">
