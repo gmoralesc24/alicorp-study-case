@@ -55,8 +55,16 @@
                     <h3><i class="fa-solid fa-microchip" style="color: var(--alicorp-red);"></i> Metodología Aplicada</h3>
                     <ul class="methodology-list">
                         <li><strong>Ingeniería de Características (RFM):</strong> Transformación de 392 mil registros transaccionales en variables de Recencia, Frecuencia y Monetario por cliente.</li>
-                        <li><strong>Tratamiento de Datos:</strong> Uso de técnicas avanzadas como <code>SMOTE</code> para balancear la variable objetivo altamente desbalanceada.</li>
-                        <li><strong>Modelado:</strong> Construcción y evaluación de algoritmos basados en árboles (Random Forest y Gradient Boosting) maximizando la curva ROC-AUC.</li>
+                        <li><strong>Tratamiento de Datos:</strong> Uso de técnicas avanzadas como <code>SMOTE</code> para balancear la variable objetivo altamente desbalanceada.
+                            <div style="font-size: 0.85rem; color: #555; margin-top: 5px; background: #f8f9fa; padding: 8px; border-left: 3px solid #28a745; border-radius: 3px;">
+                                <em>¿Qué es SMOTE?</em> Es un algoritmo que analiza los casos de éxito (minoría) y crea "clones sintéticos" similares hasta igualar el número de fracasos (mayoría). Esto obliga al modelo a aprender patrones reales en lugar de volverse pesimista y predecir siempre un "No".
+                            </div>
+                        </li>
+                        <li><strong>Modelado:</strong> Construcción y evaluación de algoritmos basados en árboles (Random Forest y Gradient Boosting) maximizando la curva ROC-AUC.
+                            <div style="font-size: 0.85rem; color: #555; margin-top: 5px; background: #f8f9fa; padding: 8px; border-left: 3px solid #f39c12; border-radius: 3px;">
+                                <em>Nota de Arquitectura:</em> Aunque el <strong>Gradient Boosting</strong> fue el modelo campeón en laboratorio por su precisión comercial, en esta demostración web se ejecuta el <strong>Random Forest</strong>. Al ejecutarse directamente en la RAM de su navegador (Edge Computing), Random Forest consume muchos menos recursos computacionales, garantizando una inferencia en milisegundos sin requerir servidores Backend.
+                            </div>
+                        </li>
                         <li><strong>Despliegue Web (Serverless):</strong> Conversión del modelo predictivo para que se ejecute en vivo usando <em>WebAssembly (PyScript)</em> en el navegador del usuario final.</li>
                     </ul>
                     
